@@ -13,8 +13,8 @@ export default function Auth() {
   return (
     <>
       {/* <TouchableWithoutFeedback> */}
-      {/* <RegistrationScreen /> */}
-      <LoginScreen />
+      <RegistrationScreen />
+      {/* <LoginScreen /> */}
       {/* </TouchableWithoutFeedback> */}
     </>
   );

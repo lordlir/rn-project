@@ -129,11 +129,9 @@ export default function Form({ title }) {
 
 const styles = StyleSheet.create({
   form: {
-    position: "relative",
-    // paddingTop: {title === "Registration" ? 92 : 32},
-
+    marginTop: 60,
     paddingHorizontal: 16,
-    // paddingBottom: 45,
+
     backgroundColor: "#fff",
 
     borderTopLeftRadius: 25,

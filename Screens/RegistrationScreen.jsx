@@ -32,13 +32,13 @@ export default function RegistrationScreen() {
           style={styles.img}
           source={require("../assets/img/img_auth.png")}
         >
-          {/* <ScrollView> */}
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : ""}
-          >
-            <Form title={"Registration"} />
-          </KeyboardAvoidingView>
-          {/* </ScrollView> */}
+          <ScrollView style={styles.scrollBoxx}>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : ""}
+            >
+              <Form title={"Registration"} />
+            </KeyboardAvoidingView>
+          </ScrollView>
         </ImageBackground>
       </View>
     </TouchableWithoutFeedback>
@@ -46,16 +46,24 @@ export default function RegistrationScreen() {
 }
 
 const styles = StyleSheet.create({
+  scrollBoxx: {
+    backfaceVisibility: "visible",
+    flexShrink: 0,
+    flexGrow: 0,
+  },
   container: {
     flex: 1,
 
     backgroundColor: "#fff",
-    // justifyContent: "flex-end",
-    // alignItems: "flex-end",
+    justifyContent: "flex-end",
   },
   img: {
-    flex: 1,
     resizeMode: "cover",
     justifyContent: "flex-end",
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
 });
