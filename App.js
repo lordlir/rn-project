@@ -6,11 +6,15 @@ import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useState } from "react";
 import { loadFonts } from "./components/font";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [appIsLoad, setAppIsReadyLoad] = useState(false);
+
+  const Stack = createNativeStackNavigator();
 
   useEffect(() => {
     async function load() {
@@ -37,7 +41,9 @@ export default function App() {
   }
   return (
     <View onLayout={onLayoutRootView} style={styles.container}>
-      <Auth />
+      <NavigationContainer>
+        <Auth />
+      </NavigationContainer>
     </View>
   );
 }

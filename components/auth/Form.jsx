@@ -24,7 +24,7 @@ const initialInputState = {
   password: "",
 };
 
-export default function Form({ title }) {
+export default function Form({ title, navigation }) {
   const [proveTitle, setProveTitle] = useState(true);
   const isShowKeyboard = keyboardShow();
   const [stateInput, setStateInput] = useState(initialInputState);
@@ -38,10 +38,21 @@ export default function Form({ title }) {
       btnText = "Login";
       linkText = "No account yet? Registr";
     }
+
     return;
   };
   chengeBtnText();
 
+  let NavigateToAuthScreen = "Login";
+
+  const navigateTo = () => {
+    // let navigaToAuthScree = title;
+    if (title === NavigateToAuthScreen) {
+      return (NavigateToAuthScreen = "Registration");
+    }
+    return (NavigateToAuthScreen = "Login");
+  };
+  navigateTo();
   const handlSubmit = () => {
     console.log(stateInput);
     setOnInput(false);
@@ -109,7 +120,9 @@ export default function Form({ title }) {
           >
             <Text style={styles.btnText}>{btnText}</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate(NavigateToAuthScreen)}
+          >
             <Text
               style={[
                 styles.linkText,

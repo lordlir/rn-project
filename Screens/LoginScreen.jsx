@@ -11,7 +11,7 @@ import {
 
 import Form from "../components/auth/Form";
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
   const [onInput, setOnInput] = useState(false);
 
   const onBlurInput = () => {
@@ -28,7 +28,7 @@ export default function LoginScreen() {
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : ""}
           >
-            <Form title={"Login"} />
+            <Form title={"Login"} navigation={navigation} />
           </KeyboardAvoidingView>
         </ImageBackground>
       </View>
