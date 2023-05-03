@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 16,
     right: 16,
+    transform: [{ translateY: -4 }],
   },
   showPassText: {
     fontSize: 16,

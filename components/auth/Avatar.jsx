@@ -7,7 +7,7 @@ export default function Avatar() {
       style={[
         styles.avatarBox,
         {
-          transform: [{ translateX: -50 }],
+          transform: [{ translateX: -40 }],
         },
       ]}
     ></View>

@@ -12,6 +12,11 @@ import {
 import Form from "../components/auth/Form";
 
 export default function LoginScreen({ navigation }) {
+   const initialInputState = {
+    
+     email: "",
+     password: "",
+   };
   const [onInput, setOnInput] = useState(false);
 
   const onBlurInput = () => {
@@ -28,7 +33,11 @@ export default function LoginScreen({ navigation }) {
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : ""}
           >
-            <Form title={"Login"} navigation={navigation} />
+            <Form
+              title={"Login"}
+              navigation={navigation}
+              initialInputState={initialInputState}
+            />
           </KeyboardAvoidingView>
         </ImageBackground>
       </View>

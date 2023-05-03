@@ -18,13 +18,7 @@ import FormTitle from "./FormTitle";
 import Avatar from "./Avatar";
 import TextInputCustom from "./TextInputCustom";
 
-const initialInputState = {
-  login: "",
-  email: "",
-  password: "",
-};
-
-export default function Form({ title, navigation }) {
+export default function Form({ title, navigation, initialInputState }) {
   const [proveTitle, setProveTitle] = useState(true);
   const isShowKeyboard = keyboardShow();
   const [stateInput, setStateInput] = useState(initialInputState);
@@ -77,6 +71,7 @@ export default function Form({ title, navigation }) {
           margin={{ marginBottom: 16 }}
           value={stateInput.login}
           placeholder={"Login"}
+          secureTextEntry={false}
           onChangeText={(value) =>
             setStateInput((prevState) => ({
               ...prevState,
@@ -91,13 +86,13 @@ export default function Form({ title, navigation }) {
         margin={{ marginBottom: 16 }}
         value={stateInput.email}
         placeholder={"Email"}
+        secureTextEntry={false}
         onChangeText={(value) =>
           setStateInput((prevState) => ({
             ...prevState,
             email: value,
           }))
         }
-        secureTextEntry={false}
       />
       <TextInputCustom
         margin={{ marginBottom: isShowKeyboard ? 0 : 43 }}

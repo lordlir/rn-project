@@ -19,6 +19,11 @@ import keyboardShow from "../util/keyboard";
 import Form from "../components/auth/Form";
 
 export default function RegistrationScreen({ navigation }) {
+  const initialInputState = {
+    login: "",
+    email: "",
+    password: "",
+  };
   const [onInput, setOnInput] = useState(false);
 
   const onBlurInput = () => {
@@ -36,7 +41,11 @@ export default function RegistrationScreen({ navigation }) {
             <KeyboardAvoidingView
               behavior={Platform.OS === "ios" ? "padding" : ""}
             >
-              <Form title={"Registration"} navigation={navigation} />
+              <Form
+                title={"Registration"}
+                navigation={navigation}
+                initialInputState={initialInputState}
+              />
             </KeyboardAvoidingView>
           </ScrollView>
         </ImageBackground>

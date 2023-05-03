@@ -8,6 +8,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { loadFonts } from "./components/font";
 import Auth from "./components/Auth";
+import { useRoute } from "./util/routing";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -39,12 +40,11 @@ export default function App() {
   if (!appIsLoad) {
     return null;
   }
+
+  const routing = useRoute(null);
   return (
     <View onLayout={onLayoutRootView} style={styles.container}>
-      <NavigationContainer>
-        <Auth />
-        {/* <Home /> */}
-      </NavigationContainer>
+      <NavigationContainer>{routing}</NavigationContainer>
     </View>
   );
 }
