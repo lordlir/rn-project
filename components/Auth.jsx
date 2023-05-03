@@ -9,20 +9,22 @@ import {
 import RegistrationScreen from "../Screens/RegistrationScreen";
 import LoginScreen from "../Screens/LoginScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Home from "../Screens/home/Home";
 
 export default function Auth() {
-  const Stack = createNativeStackNavigator();
+  const AuthStack = createNativeStackNavigator();
 
   return (
     <>
-      <Stack.Navigator
+      <AuthStack.Navigator
         initialRouteName="Registration"
         screenOptions={{ headerShown: false }}
       >
         {/* <Stack.Screen name="Home" component={Home} /> */}
-        <Stack.Screen name="Registration" component={RegistrationScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-      </Stack.Navigator>
+        <AuthStack.Screen name="Registration" component={RegistrationScreen} />
+        <AuthStack.Screen name="Login" component={LoginScreen} />
+        <AuthStack.Screen name="Home" component={Home} />
+      </AuthStack.Navigator>
       {/* <TouchableWithoutFeedback> */}
       {/* <RegistrationScreen /> */}
       {/* <LoginScreen /> */}

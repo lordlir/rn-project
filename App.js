@@ -1,13 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import RegistrationScreen from "./Screens/RegistrationScreen";
-import Auth from "./components/Auth";
+// import RegistrationScreen from "./Screens/RegistrationScreen";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useState } from "react";
-import { loadFonts } from "./components/font";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { loadFonts } from "./components/font";
+import Auth from "./components/Auth";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -43,6 +43,7 @@ export default function App() {
     <View onLayout={onLayoutRootView} style={styles.container}>
       <NavigationContainer>
         <Auth />
+        {/* <Home /> */}
       </NavigationContainer>
     </View>
   );

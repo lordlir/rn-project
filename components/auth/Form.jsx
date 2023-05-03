@@ -57,6 +57,7 @@ export default function Form({ title, navigation }) {
     console.log(stateInput);
     setOnInput(false);
     setStateInput(initialInputState);
+    navigation.navigate("Home");
   };
 
   return (
