@@ -17,6 +17,7 @@ import keyboardShow from "../../util/keyboard";
 import FormTitle from "./FormTitle";
 import Avatar from "./Avatar";
 import TextInputCustom from "./TextInputCustom";
+import ButtonForm from "../ButtonForm";
 
 export default function Form({ title, navigation, initialInputState }) {
   const [proveTitle, setProveTitle] = useState(true);
@@ -109,13 +110,7 @@ export default function Form({ title, navigation, initialInputState }) {
 
       {!isShowKeyboard ? (
         <>
-          <TouchableOpacity
-            style={styles.btn}
-            activeOpacity={0.7}
-            onPress={handlSubmit}
-          >
-            <Text style={styles.btnText}>{btnText}</Text>
-          </TouchableOpacity>
+          <ButtonForm title={btnText} onPress={handlSubmit} />
           <TouchableOpacity
             onPress={() => navigation.navigate(NavigateToAuthScreen)}
           >

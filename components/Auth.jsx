@@ -9,7 +9,7 @@ import {
 import RegistrationScreen from "../Screens/RegistrationScreen";
 import LoginScreen from "../Screens/LoginScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Home from "../Screens/home/Home";
+import Home from "../Screens/Home/Home";
 
 export default function Auth() {
   const AuthStack = createNativeStackNavigator();

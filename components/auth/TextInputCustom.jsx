@@ -34,14 +34,16 @@ export default function TextInputCustom({
         secureTextEntry={secureTextEntry}
       />
       {placeholder === "Password" ? (
-        <TouchableOpacity
-          style={styles.showPass}
-          onPress={() => {
-            setSecureTextEntry((state) => !state);
-          }}
-        >
-          <Text style={styles.showPassText}>{passwordText}</Text>
-        </TouchableOpacity>
+        <>
+          <TouchableOpacity
+            style={styles.showPass}
+            onPress={() => {
+              setSecureTextEntry((state) => !state);
+            }}
+          >
+            <Text style={styles.showPassText}>{passwordText}</Text>
+          </TouchableOpacity>
+        </>
       ) : (
         ""
       )}
