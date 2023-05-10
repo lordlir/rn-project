@@ -1,18 +1,22 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  getFocusedRouteNameFromRoute,
+} from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import PostsScreen from "./PostsScreen";
+// import PostsScreen from "./PostsScreen";
 import ProfileScreen from "./ProfileScreen";
 import CreatePossScreen from "./CreatePossScreen";
 import { MaterialCommunityIcons, AntDesign, Feather } from "@expo/vector-icons";
+import DefaultScreen from "../Nasted/DefaultScreen";
 
-export default function home() {
+export default function Home() {
   const MainTab = createBottomTabNavigator();
   return (
     // <NavigationContainer>
     <MainTab.Navigator
-      initialRouteName="Posts"
+      initialRouteName="Default"
       screenOptions={{
         tabBarShowLabel: false,
         tabBarActiveTintColor: "#fff",
@@ -21,7 +25,7 @@ export default function home() {
       }}
     >
       <MainTab.Screen
-        options={{
+        options={({ route }) => ({
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="view-gallery"
@@ -29,12 +33,20 @@ export default function home() {
               color={color}
             />
           ),
-        }}
-        name="Posts"
-        component={PostsScreen}
+          tabBarStyle: ((route) => {
+            const routeName = getFocusedRouteNameFromRoute(route) ?? "";
+            if (routeName === "Comments" || routeName === "Map") {
+              return { display: "none" };
+            }
+            return { height: 50 };
+          })(route),
+        })}
+        name="Default"
+        component={DefaultScreen}
       />
       <MainTab.Screen
         options={{
+          tabBarStyle: { display: "none" },
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="plus" size={size} color={color} />
           ),

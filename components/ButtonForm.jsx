@@ -1,10 +1,17 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 
-export default function ButtonForm({ title, onPress }) {
+export default function ButtonForm({ title, onPress, disable }) {
   return (
-    <TouchableOpacity style={styles.btn} activeOpacity={0.7} onPress={onPress}>
-      <Text style={styles.btnText}>{title}</Text>
+    <TouchableOpacity
+      style={[styles.btn, disable && { backgroundColor: "#F6F6F6" }]}
+      activeOpacity={0.7}
+      onPress={onPress}
+      disabled={disable}
+    >
+      <Text style={[styles.btnText, disable && { color: "#bdbdbd" }]}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 }

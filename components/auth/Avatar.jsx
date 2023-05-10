@@ -1,28 +1,33 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
+// import AvatarBtn from "../AvatarBtn";
 
-export default function Avatar() {
+const imagePlaseholder = require("../../assets/img/pngegg.png");
+export default function Avatar({
+  children,
+  selectedImage,
+  // imagePlaseholder,
+  size,
+}) {
+  const imageSource =
+    selectedImage !== null ? { uri: selectedImage } : imagePlaseholder;
+
   return (
-    <View
-      style={[
-        styles.avatarBox,
-        {
-          transform: [{ translateX: -40 }],
-        },
-      ]}
-    ></View>
+    <View style={{ position: "relative" }}>
+      <Image
+        source={imageSource}
+        style={{
+          resizeMode: "cover",
+          height: size,
+          width: size,
+          overflow: "hidden",
+          borderRadius: 16,
+        }}
+      />
+      {children}
+      {/* <AvatarBtn /> */}
+    </View>
   );
 }
 
-const styles = StyleSheet.create({
-  avatarBox: {
-    position: "absolute",
-    top: -60,
-    left: "50%",
-
-    height: 120,
-    width: 120,
-    borderRadius: 16,
-    backgroundColor: "#f6f6f6",
-  },
-});
+const styles = StyleSheet.create({});

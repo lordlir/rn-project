@@ -18,9 +18,15 @@ import FormTitle from "./FormTitle";
 import Avatar from "./Avatar";
 import TextInputCustom from "./TextInputCustom";
 import ButtonForm from "../ButtonForm";
+import AvatarBtn from "../AvatarBtn";
+import * as ImagePicker from "expo-image-picker";
+
+const imagePlaseholder = require("../../assets/img/pngegg.png");
 
 export default function Form({ title, navigation, initialInputState }) {
   const [proveTitle, setProveTitle] = useState(true);
+  const [selectedImage, setSelectedImage] = useState(null);
+
   const isShowKeyboard = keyboardShow();
   const [stateInput, setStateInput] = useState(initialInputState);
   const [secureTextEntry, setSecureTextEntry] = useState(false);
@@ -55,6 +61,19 @@ export default function Form({ title, navigation, initialInputState }) {
     navigation.navigate("Home");
   };
 
+  const pickImageAsync = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setSelectedImage(result.assets[0].uri);
+    } else {
+      alert("You did not select any image.");
+    }
+  };
+
   return (
     <View
       style={[
@@ -65,7 +84,26 @@ export default function Form({ title, navigation, initialInputState }) {
         },
       ]}
     >
-      {title === "Registration" ? <Avatar /> : ""}
+      {title === "Registration" ? (
+        <View
+          style={[
+            styles.avatarBox,
+            {
+              transform: [{ translateX: -40 }],
+            },
+          ]}
+        >
+          <Avatar
+            selectedImage={selectedImage}
+            imagePlaseholder={imagePlaseholder}
+            size={120}
+          >
+            <AvatarBtn onPress={pickImageAsync} />
+          </Avatar>
+        </View>
+      ) : (
+        ""
+      )}
       <FormTitle title={title} />
       {title === "Registration" ? (
         <TextInputCustom
@@ -133,6 +171,7 @@ export default function Form({ title, navigation, initialInputState }) {
 
 const styles = StyleSheet.create({
   form: {
+    position: "relative",
     marginTop: 60,
     paddingHorizontal: 16,
 
@@ -190,5 +229,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
 
     color: "#1B4371",
+  },
+  avatarBox: {
+    position: "absolute",
+    top: -60,
+    left: "50%",
+
+    height: 120,
+    width: 120,
+    borderRadius: 16,
+    backgroundColor: "#f6f6f6",
   },
 });

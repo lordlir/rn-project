@@ -7,7 +7,6 @@ import { useCallback, useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { loadFonts } from "./components/font";
-import Auth from "./components/Auth";
 import { useRoute } from "./util/routing";
 
 SplashScreen.preventAutoHideAsync();
