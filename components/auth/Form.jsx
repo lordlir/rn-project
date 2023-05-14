@@ -54,12 +54,7 @@ export default function Form({ title, navigation, initialInputState }) {
     return (NavigateToAuthScreen = "Login");
   };
   navigateTo();
-  const handlSubmit = () => {
-    console.log(stateInput);
-    setOnInput(false);
-    setStateInput(initialInputState);
-    navigation.navigate("Home");
-  };
+ 
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -69,11 +64,21 @@ export default function Form({ title, navigation, initialInputState }) {
 
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
+      setStateInput((prevState) => ({
+        ...prevState,
+        avatar: selectedImage,
+      }));
     } else {
       alert("You did not select any image.");
     }
   };
 
+   const handlSubmit = () => {
+    console.log(stateInput);
+    setOnInput(false);
+    setStateInput(initialInputState);
+    navigation.navigate("Home");
+  };
   return (
     <View
       style={[

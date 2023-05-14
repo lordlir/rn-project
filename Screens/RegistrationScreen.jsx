@@ -23,6 +23,7 @@ export default function RegistrationScreen({ navigation }) {
     login: "",
     email: "",
     password: "",
+    avatar: "",
   };
   const [onInput, setOnInput] = useState(false);
 

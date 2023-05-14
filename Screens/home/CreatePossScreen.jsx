@@ -28,7 +28,7 @@ export default function CreatePossScreen({ navigation }) {
   const [camera, setCamera] = useState(null);
   const [showCamera, setShowCamera] = useState(true);
   const [type, setType] = useState(CameraType.back);
-  const [location, setLocation] = useState(postState);
+  const [post, setPost] = useState(postState);
 
   const [hasPermission, setHasPermission] = useState(null);
 
@@ -42,51 +42,76 @@ export default function CreatePossScreen({ navigation }) {
       current === CameraType.back ? CameraType.front : CameraType.back
     );
   };
-
+  const [cameraPermission, setCameraPermition] = useState(null);
   useEffect(() => {
     (async () => {
       const cameraPermission = await Camera.requestCameraPermissionsAsync();
+      // const locationPermission =
+      //   await Location.requestForegroundPermissionsAsync();
+
+      // setHasPermission(
+      //   cameraPermission.status === "granted" &&
+      //     locationPermission.status === "granted"
+      // );
+      setCameraPermition(cameraPermission.status === "granted");
+    })();
+  }, []);
+  const [location, setLocation] = useState(null);
+  useEffect(() => {
+    (async () => {
       const locationPermission =
         await Location.requestForegroundPermissionsAsync();
 
-      setHasPermission(
-        cameraPermission.status === "granted" &&
-          locationPermission.status === "granted"
-      );
+      if (locationPermission.status === "granted") {
+        let local = await Location.getCurrentPositionAsync();
+        setLocation(local);
+      }
     })();
   }, []);
 
   const takePhoto = async () => {
     try {
       const { uri } = await camera.takePictureAsync();
-      let local = await Location.getCurrentPositionAsync();
-      setLocation((prevState) => ({
+      // console.log("permission", locationPermission);
+      // if (locationPermission) {
+      //   let local = await Location.getCurrentPositionAsync();
+      //   console.log(local);
+      //   if (local) {
+      //     setPost((prevState) => ({
+      //       ...prevState,
+      //       photo: uri,
+      //       latitude: local.coords.latitude,
+      //       longitude: local.coords.longitude,
+      //     }));
+      //     console.log(local.coords.latitude);
+      //     console.log(local.coords.longitude);
+      //   }
+      //   return;
+      // }
+      console.log("local", location);
+      setPost((prevState) => ({
         ...prevState,
         photo: uri,
-        latitude: local.coords.latitude,
-        longitude: local.coords.longitude,
+        latitude: location?.coords?.latitude,
+        longitude: location?.coords?.longitude,
       }));
-
-      setShowCamera(false);
     } catch (error) {
       console.log("error", error);
+    } finally {
+      setShowCamera(false);
     }
   };
 
   const toPublishPost = () => {
-    navigation.navigate("Posts", { location });
+    navigation.navigate("Posts", { location: post });
     console.log(location);
     setShowCamera(true);
 
-    setLocation(postState);
+    setPost(postState);
   };
 
   const chengeDis = () => {
-    if (
-      location.photo !== false &&
-      location.title !== "" &&
-      location.name !== ""
-    ) {
+    if (post.photo !== false && post.title !== "" && post.name !== "") {
       setTimeout(() => {
         setDisable(false);
       }, 300);
@@ -123,7 +148,7 @@ export default function CreatePossScreen({ navigation }) {
         {!isShowKeyboard && (
           <View style={styles.cameraBox}>
             <View style={styles.containerCamera}>
-              {location.photo && (
+              {post.photo && (
                 <View
                   style={{
                     position: "relative",
@@ -131,14 +156,14 @@ export default function CreatePossScreen({ navigation }) {
                   }}
                 >
                   <Image
-                    source={{ uri: location.photo }}
+                    source={{ uri: post.photo }}
                     style={styles.imageFromCamera}
                   />
                   <TouchableOpacity
                     style={[styles.iconCamera, styles.iconCameraOnImage]}
                     onPress={() => {
                       setShowCamera(true);
-                      setLocation((prevState) => ({
+                      setPost((prevState) => ({
                         ...prevState,
                         photo: false,
                       }));
@@ -172,13 +197,13 @@ export default function CreatePossScreen({ navigation }) {
               )}
             </View>
             <Text style={styles.textUnderCamera}>
-              {location.photo ? "Change photo?" : "Please download a photo"}
+              {post.photo ? "Change photo?" : "Please download a photo"}
             </Text>
           </View>
         )}
         <View style={{ marginBottom: 16 }}>
           <TextInput
-            value={location.title}
+            value={post.title}
             style={[
               styles.inputTitle,
               onInput === "Title" && styles.inputOnFocus,
@@ -186,7 +211,7 @@ export default function CreatePossScreen({ navigation }) {
             placeholder="Title"
             placeholderTextColor={"#BDBDBD"}
             onChangeText={(value) =>
-              setLocation((prevState) => ({
+              setPost((prevState) => ({
                 ...prevState,
                 title: value,
               }))
@@ -197,7 +222,7 @@ export default function CreatePossScreen({ navigation }) {
         </View>
         <View style={{ marginBottom: 32 }}>
           <TextInput
-            value={location.name}
+            value={post.name}
             style={[
               styles.inputLocation,
               onInput === "Location" && styles.inputOnFocus,
@@ -205,7 +230,7 @@ export default function CreatePossScreen({ navigation }) {
             placeholder="Location"
             placeholderTextColor={"#BDBDBD"}
             onChangeText={(value) =>
-              setLocation((prevState) => ({
+              setPost((prevState) => ({
                 ...prevState,
                 name: value,
               }))

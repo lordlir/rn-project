@@ -10,7 +10,7 @@ import ProfileScreen from "./ProfileScreen";
 import CreatePossScreen from "./CreatePossScreen";
 import { MaterialCommunityIcons, AntDesign, Feather } from "@expo/vector-icons";
 import DefaultScreen from "../Nasted/DefaultScreen";
-
+import CameraSCreen from "../cameraScreen/CameraSCreen";
 export default function Home() {
   const MainTab = createBottomTabNavigator();
   return (
@@ -62,6 +62,15 @@ export default function Home() {
         }}
         name="Profile"
         component={ProfileScreen}
+      />
+      <MainTab.Screen
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="user" size={size} color={color} />
+          ),
+        }}
+        name="camera"
+        component={CameraSCreen}
       />
     </MainTab.Navigator>
     // </NavigationContainer>

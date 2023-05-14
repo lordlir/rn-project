@@ -45,7 +45,7 @@ export default function PostsScreen({ navigation, route }) {
         >
           <View style={styles.userConteiner}>
             <View style={styles.avatarConteiner}>
-              <Avatar size={20} />
+              <Avatar size={60} />
             </View>
             <View>
               <Text style={styles.userNameText}>name</Text>

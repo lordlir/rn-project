@@ -6,8 +6,10 @@ import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Provider } from "react-redux";
 import { loadFonts } from "./components/font";
 import { useRoute } from "./util/routing";
+import { store } from "./redax/store";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -40,11 +42,13 @@ export default function App() {
     return null;
   }
 
-  const routing = useRoute(null);
+  const routing = useRoute(false);
   return (
-    <View onLayout={onLayoutRootView} style={styles.container}>
-      <NavigationContainer>{routing}</NavigationContainer>
-    </View>
+    <Provider store={store}>
+      <View onLayout={onLayoutRootView} style={styles.container}>
+        <NavigationContainer>{routing}</NavigationContainer>
+      </View>
+    </Provider>
   );
 }
 
