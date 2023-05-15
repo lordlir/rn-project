@@ -7,6 +7,7 @@ import {
   TextInput,
 } from "react-native";
 import React, { useEffect, useState } from "react";
+// import { v4 as uuidv4 } from "uuid";
 
 import { Camera, CameraType } from "expo-camera";
 import * as Location from "expo-location";
@@ -15,6 +16,7 @@ import { Entypo, MaterialIcons, EvilIcons } from "@expo/vector-icons";
 import Header from "../../components/main/Header";
 import ButtonForm from "../../components/ButtonForm";
 import keyboardShow from "../../util/keyboard";
+import { storage } from "../../firebase/config";
 
 const postState = {
   photo: false,
@@ -102,8 +104,25 @@ export default function CreatePossScreen({ navigation }) {
     }
   };
 
+  const uploadPhotoToServer = async () => {
+    try {
+      const responce = await fetch(post.photo);
+      const file = await responce.blob();
+
+      const uniqueIdPost = Date.now().toString();
+      const stogaRef = ref(storage, `postImg/${uniqueIdPost}`);
+
+      const res = await uploadBytes(storageRef, file);
+      const postImageUrl = await getDownloadURL(storageRef);
+      return postImageUrl;
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   const toPublishPost = () => {
-    navigation.navigate("Posts", { location: post });
+    navigation.navigate("Posts");
+    uploadPhotoToServer();
     console.log(location);
     setShowCamera(true);
 

@@ -10,8 +10,25 @@ import React, { useState, useEffect } from "react";
 import { MaterialIcons, EvilIcons, FontAwesome } from "@expo/vector-icons";
 import Header from "../../components/main/Header";
 import Avatar from "../../components/auth/Avatar";
+import { useDispatch, useSelector } from "react-redux";
+import { authSingOutUser } from "../../redax/auth/authOperation";
+import {
+  selectUserAvatar,
+  selectUserEmail,
+  selectUserName,
+} from "../../redax/auth/authReducer";
 
 export default function PostsScreen({ navigation, route }) {
+  const dispatch = useDispatch();
+
+  const name = useSelector(selectUserName);
+  const email = useSelector(selectUserEmail);
+  const avatar = useSelector(selectUserAvatar);
+  console.log(avatar);
+  const logout = () => {
+    dispatch(authSingOutUser());
+  };
+
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     if (route.params) {
@@ -33,7 +50,7 @@ export default function PostsScreen({ navigation, route }) {
               right: 16,
               bottom: 10,
             }}
-            onPress={() => navigation.navigate("Login")}
+            onPress={logout}
           />
         </Header>
         <View
@@ -45,11 +62,11 @@ export default function PostsScreen({ navigation, route }) {
         >
           <View style={styles.userConteiner}>
             <View style={styles.avatarConteiner}>
-              <Avatar size={60} />
+              <Avatar size={60} selectedImage={avatar} />
             </View>
             <View>
-              <Text style={styles.userNameText}>name</Text>
-              <Text style={styles.userMailText}>email@mail.com</Text>
+              <Text style={styles.userNameText}>{name}</Text>
+              <Text style={styles.userMailText}>{email}</Text>
             </View>
           </View>
           <FlatList

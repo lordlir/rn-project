@@ -14,16 +14,20 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
 } from "react-native";
+import { useDispatch } from "react-redux";
 
 import keyboardShow from "../util/keyboard";
 import Form from "../components/auth/Form";
+import { authSingUpUser } from "../redax/auth/authOperation";
 
 export default function RegistrationScreen({ navigation }) {
+  const dispatch = useDispatch();
+
   const initialInputState = {
     login: "",
     email: "",
     password: "",
-    avatar: "",
+    avatar: null,
   };
   const [onInput, setOnInput] = useState(false);
 
@@ -31,6 +35,15 @@ export default function RegistrationScreen({ navigation }) {
     setOnInput(false);
     Keyboard.dismiss();
   };
+  console.log("Platform ==>", Platform);
+
+  // const onSubmit = () => {
+  //   console.log(stateInput);
+  //   dispatch(authSingUpUser(stateInput));
+  //   setOnInput(false);
+  //   setStateInput(initialInputState);
+  //   navigation.navigate("Home");
+  // };
   return (
     <TouchableWithoutFeedback onPress={onBlurInput}>
       <View style={styles.container}>
@@ -46,6 +59,7 @@ export default function RegistrationScreen({ navigation }) {
                 title={"Registration"}
                 navigation={navigation}
                 initialInputState={initialInputState}
+                authMethod={authSingUpUser}
               />
             </KeyboardAvoidingView>
           </ScrollView>

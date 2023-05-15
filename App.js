@@ -4,19 +4,18 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useState } from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+// import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Provider } from "react-redux";
 import { loadFonts } from "./components/font";
-import { useRoute } from "./util/routing";
 import { store } from "./redax/store";
+import Main from "./components/Main";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [appIsLoad, setAppIsReadyLoad] = useState(false);
 
-  const Stack = createNativeStackNavigator();
+  // const Stack = createNativeStackNavigator();
 
   useEffect(() => {
     async function load() {
@@ -42,11 +41,10 @@ export default function App() {
     return null;
   }
 
-  const routing = useRoute(false);
   return (
     <Provider store={store}>
       <View onLayout={onLayoutRootView} style={styles.container}>
-        <NavigationContainer>{routing}</NavigationContainer>
+        <Main />
       </View>
     </Provider>
   );

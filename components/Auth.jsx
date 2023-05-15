@@ -15,7 +15,7 @@ export default function Auth() {
       >
         <AuthStack.Screen name="Registration" component={RegistrationScreen} />
         <AuthStack.Screen name="Login" component={LoginScreen} />
-        <AuthStack.Screen name="Home" component={Home} />
+        {/* <AuthStack.Screen name="Home" component={Home} /> */}
       </AuthStack.Navigator>
     </>
   );

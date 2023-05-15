@@ -10,19 +10,30 @@ import {
 } from "react-native";
 
 import Form from "../components/auth/Form";
+import { useDispatch } from "react-redux";
+import { authSingInUser } from "../redax/auth/authOperation";
 
 export default function LoginScreen({ navigation }) {
-   const initialInputState = {
-    
-     email: "",
-     password: "",
-   };
+  const dispatch = useDispatch();
+
+  const initialInputState = {
+    email: "",
+    password: "",
+  };
   const [onInput, setOnInput] = useState(false);
 
   const onBlurInput = () => {
     setOnInput(false);
     Keyboard.dismiss();
   };
+
+  // const onSubmit = () => {
+  //   console.log(stateInput);
+  //   dispatch(authSingInUser(stateInput));
+  //   setOnInput(false);
+  //   setStateInput(initialInputState);
+  //   navigation.navigate("Home");
+  // };
   return (
     <TouchableWithoutFeedback onPress={onBlurInput}>
       <View style={styles.container}>
@@ -37,6 +48,7 @@ export default function LoginScreen({ navigation }) {
               title={"Login"}
               navigation={navigation}
               initialInputState={initialInputState}
+              authMethod={authSingInUser}
             />
           </KeyboardAvoidingView>
         </ImageBackground>

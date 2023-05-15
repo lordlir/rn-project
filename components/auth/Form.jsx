@@ -20,10 +20,17 @@ import TextInputCustom from "./TextInputCustom";
 import ButtonForm from "../ButtonForm";
 import AvatarBtn from "../AvatarBtn";
 import * as ImagePicker from "expo-image-picker";
+import { useDispatch } from "react-redux";
+import { authSingInUser, authSingUpUser } from "../../redax/auth/authOperation";
 
 const imagePlaseholder = require("../../assets/img/pngegg.png");
 
-export default function Form({ title, navigation, initialInputState }) {
+export default function Form({
+  title,
+  navigation,
+  initialInputState,
+  authMethod,
+}) {
   const [proveTitle, setProveTitle] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -31,9 +38,11 @@ export default function Form({ title, navigation, initialInputState }) {
   const [stateInput, setStateInput] = useState(initialInputState);
   const [secureTextEntry, setSecureTextEntry] = useState(false);
   const [onInput, setOnInput] = useState(false);
+  const dispatch = useDispatch();
 
   let btnText = "Registr";
   let linkText = "Already have an account. Log In";
+
   const chengeBtnText = () => {
     if (title === "Login") {
       btnText = "Login";
@@ -54,7 +63,6 @@ export default function Form({ title, navigation, initialInputState }) {
     return (NavigateToAuthScreen = "Login");
   };
   navigateTo();
- 
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -63,21 +71,23 @@ export default function Form({ title, navigation, initialInputState }) {
     });
 
     if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
       setStateInput((prevState) => ({
         ...prevState,
-        avatar: selectedImage,
+        avatar: result.assets[0].uri,
       }));
+      // setSelectedImage(result.assets[0].uri);
     } else {
       alert("You did not select any image.");
     }
   };
 
-   const handlSubmit = () => {
+  const handlSubmit = () => {
     console.log(stateInput);
+
+    dispatch(authMethod(stateInput));
     setOnInput(false);
     setStateInput(initialInputState);
-    navigation.navigate("Home");
+    // navigation.navigate("Home");
   };
   return (
     <View
@@ -99,7 +109,7 @@ export default function Form({ title, navigation, initialInputState }) {
           ]}
         >
           <Avatar
-            selectedImage={selectedImage}
+            selectedImage={stateInput.avatar}
             imagePlaseholder={imagePlaseholder}
             size={120}
           >
