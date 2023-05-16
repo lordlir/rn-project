@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { MaterialIcons, EvilIcons, FontAwesome } from "@expo/vector-icons";
 import Header from "../../components/main/Header";
 import Avatar from "../../components/auth/Avatar";
@@ -17,6 +17,9 @@ import {
   selectUserEmail,
   selectUserName,
 } from "../../redax/auth/authReducer";
+import { useFocusEffect } from "@react-navigation/native";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { db } from "../../firebase/config";
 
 export default function PostsScreen({ navigation, route }) {
   const dispatch = useDispatch();
@@ -24,17 +27,42 @@ export default function PostsScreen({ navigation, route }) {
   const name = useSelector(selectUserName);
   const email = useSelector(selectUserEmail);
   const avatar = useSelector(selectUserAvatar);
-  console.log(avatar);
+  // console.log("avatar=>", avatar);
   const logout = () => {
     dispatch(authSingOutUser());
   };
 
   const [posts, setPosts] = useState([]);
-  useEffect(() => {
-    if (route.params) {
-      setPosts((prevState) => [route.params.location, ...prevState]);
+  // useEffect(() => {
+  //   if (route.params) {
+  //     setPosts((prevState) => [route.params.location, ...prevState]);
+  //   }
+  // }, [route.params]);
+
+  useFocusEffect(
+    useCallback(() => {
+      console.log("useeffect postScreen");
+      getAllPost();
+    }, [])
+  );
+
+  const getAllPost = async () => {
+    try {
+      const q = query(collection(db, "posts"), orderBy("createAt"));
+      const querySnap = await getDocs(q);
+
+      const posts = querySnap.docs.map((doc) => ({
+        ...doc.data(),
+        postId: doc.id,
+      }));
+
+      setPosts(posts);
+    } catch (error) {
+      alert(error.message);
+      console.log("getAllPost", error.message);
     }
-  }, [route.params]);
+  };
+
   console.log("post", posts);
   return (
     <>

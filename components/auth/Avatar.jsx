@@ -11,7 +11,7 @@ export default function Avatar({
 }) {
   const imageSource =
     selectedImage !== null ? { uri: selectedImage } : imagePlaseholder;
-
+  console.log("imageSource==>", imageSource);
   return (
     <View style={{ position: "relative" }}>
       <Image

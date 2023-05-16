@@ -7,7 +7,8 @@ import {
   TextInput,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-// import { v4 as uuidv4 } from "uuid";
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
 
 import { Camera, CameraType } from "expo-camera";
 import * as Location from "expo-location";
@@ -16,7 +17,15 @@ import { Entypo, MaterialIcons, EvilIcons } from "@expo/vector-icons";
 import Header from "../../components/main/Header";
 import ButtonForm from "../../components/ButtonForm";
 import keyboardShow from "../../util/keyboard";
-import { storage } from "../../firebase/config";
+import { db, storage } from "../../firebase/config";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { useSelector } from "react-redux";
+import {
+  selectUserAvatar,
+  selectUserId,
+  selectUserName,
+} from "../../redax/auth/authReducer";
 
 const postState = {
   photo: false,
@@ -36,6 +45,10 @@ export default function CreatePossScreen({ navigation }) {
 
   const [onInput, setOnInput] = useState(false);
   const [disable, setDisable] = useState(true);
+
+  const userId = useSelector(selectUserId);
+  const userName = useSelector(selectUserName);
+  const userAvatar = useSelector(selectUserAvatar);
 
   const isShowKeyboard = keyboardShow();
 
@@ -58,7 +71,9 @@ export default function CreatePossScreen({ navigation }) {
       setCameraPermition(cameraPermission.status === "granted");
     })();
   }, []);
+
   const [location, setLocation] = useState(null);
+
   useEffect(() => {
     (async () => {
       const locationPermission =
@@ -94,8 +109,8 @@ export default function CreatePossScreen({ navigation }) {
       setPost((prevState) => ({
         ...prevState,
         photo: uri,
-        latitude: location?.coords?.latitude,
-        longitude: location?.coords?.longitude,
+        latitude: location?.coords?.latitude || "",
+        longitude: location?.coords?.longitude || "",
       }));
     } catch (error) {
       console.log("error", error);
@@ -109,21 +124,50 @@ export default function CreatePossScreen({ navigation }) {
       const responce = await fetch(post.photo);
       const file = await responce.blob();
 
-      const uniqueIdPost = Date.now().toString();
-      const stogaRef = ref(storage, `postImg/${uniqueIdPost}`);
+      const uniqueIdPost = uuidv4();
+      const storageRef = ref(storage, `postImg/${uniqueIdPost}`);
 
       const res = await uploadBytes(storageRef, file);
       const postImageUrl = await getDownloadURL(storageRef);
       return postImageUrl;
     } catch (error) {
       alert(error.message);
+      console.log("PhotoToServer", error.message);
+    }
+  };
+
+  const uploadPostToServer = async () => {
+    try {
+      const photo = await uploadPhotoToServer();
+      setPost((prevState) => ({
+        ...prevState,
+        photo,
+      }));
+      const sendPost = {
+        ...post,
+        userId,
+        userName,
+        userAvatar,
+        comments: 0,
+        likes: 0,
+      };
+      console.log("post==>", post);
+      const createPost = await addDoc(collection(db, "posts"), {
+        ...sendPost,
+
+        createAt: serverTimestamp(),
+      });
+    } catch (error) {
+      alert(error.message);
+      console.log("PostToServer", error.message);
     }
   };
 
   const toPublishPost = () => {
+    uploadPostToServer();
     navigation.navigate("Posts");
-    uploadPhotoToServer();
-    console.log(location);
+    // uploadPhotoToServer();
+    // console.log(location);
     setShowCamera(true);
 
     setPost(postState);
