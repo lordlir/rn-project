@@ -7,8 +7,12 @@ import {
   TextInput,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import "react-native-get-random-values";
+// import "react-native-get-random-values";
+import "expo-random";
 import { v4 as uuidv4 } from "uuid";
+import { polyfillWebCrypto } from "expo-standard-web-crypto";
+
+polyfillWebCrypto();
 
 import { Camera, CameraType } from "expo-camera";
 import * as Location from "expo-location";
@@ -109,9 +113,10 @@ export default function CreatePossScreen({ navigation }) {
       setPost((prevState) => ({
         ...prevState,
         photo: uri,
-        latitude: location?.coords?.latitude || "",
-        longitude: location?.coords?.longitude || "",
+        latitude: location ? location?.coords?.latitude : "",
+        longitude: location ? location?.coords?.longitude : "",
       }));
+      console.log("post.local", post);
     } catch (error) {
       console.log("error", error);
     } finally {
@@ -123,11 +128,13 @@ export default function CreatePossScreen({ navigation }) {
     try {
       const responce = await fetch(post.photo);
       const file = await responce.blob();
+      const formData = new FormData();
+      formData.append("photo", file, "photo.jpg");
 
       const uniqueIdPost = uuidv4();
       const storageRef = ref(storage, `postImg/${uniqueIdPost}`);
 
-      const res = await uploadBytes(storageRef, file);
+      const res = await uploadBytes(storageRef, formData);
       const postImageUrl = await getDownloadURL(storageRef);
       return postImageUrl;
     } catch (error) {

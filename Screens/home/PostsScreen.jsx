@@ -48,7 +48,7 @@ export default function PostsScreen({ navigation, route }) {
 
   const getAllPost = async () => {
     try {
-      const q = query(collection(db, "posts"), orderBy("createAt"));
+      const q = query(collection(db, "posts"));
       const querySnap = await getDocs(q);
 
       const posts = querySnap.docs.map((doc) => ({
@@ -115,27 +115,75 @@ export default function PostsScreen({ navigation, route }) {
                 </View>
                 <Text style={styles.imageTitleText}>{item.title}</Text>
                 <View style={styles.touchableBox}>
-                  <TouchableOpacity
-                    style={{ flexDirection: "row", alignItems: "center" }}
-                    onPress={() => navigation.navigate("Comments", { item })}
-                  >
-                    {/* <FontAwesome
-                      name="comment"
-                      size={24}
-                      color="#ff6c00"
-                      style={{ transform: [{ scaleX: -1 }] }}
-                    /> */}
-                    <View>
-                      <FontAwesome
-                        name="comment-o"
-                        size={24}
-                        color="#bdbdbd"
-                        style={{ transform: [{ scaleX: -1 }] }}
-                      />
-                    </View>
+                  <View style={{ flexDirection: "row" }}>
+                    <TouchableOpacity
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginRight: 24,
+                      }}
+                      onPress={() =>
+                        navigation.navigate("Comments", {
+                          photo: item.photo,
+                          postId: item.postId,
+                        })
+                      }
+                    >
+                      <View>
+                        {item.comments > 0 ? (
+                          <FontAwesome
+                            name="comment"
+                            size={24}
+                            color="#ff6c00"
+                            style={{ transform: [{ scaleX: -1 }] }}
+                          />
+                        ) : (
+                          <FontAwesome
+                            name="comment-o"
+                            size={24}
+                            color="#bdbdbd"
+                            style={{ transform: [{ scaleX: -1 }] }}
+                          />
+                        )}
+                      </View>
 
-                    <Text style={styles.countComment}>0</Text>
-                  </TouchableOpacity>
+                      <Text style={styles.countComment}>{item.comments}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                      // onPress={() =>
+                      //   navigation.navigate("Comments", {
+                      //     photo: item.photo,
+                      //     postId: item.postId,
+                      //   })
+                      // }
+                    >
+                      <View>
+                        {/* {item.comments > 0 ? (
+                          <FontAwesome
+                            name="comment"
+                            size={24}
+                            color="#ff6c00"
+                            style={{ transform: [{ scaleX: -1 }] }}
+                          />
+                        ) : (
+                          <FontAwesome
+                            name="comment-o"
+                            size={24}
+                            color="#bdbdbd"
+                            style={{ transform: [{ scaleX: -1 }] }}
+                          />
+                        )} */}
+                        <EvilIcons
+                          name="like"
+                          size={24}
+                          color={item.likes > 0 ? "#ff6c00" : "#bdbdbd"}
+                        />
+                      </View>
+
+                      <Text style={styles.countComment}>{item.likes}</Text>
+                    </TouchableOpacity>
+                  </View>
                   <TouchableOpacity
                     style={{ flexDirection: "row", alignItems: "center" }}
                     onPress={() => navigation.navigate("Map", item)}
